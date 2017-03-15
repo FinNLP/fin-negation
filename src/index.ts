@@ -22,7 +22,7 @@ Fin.Run.prototype.negation = function(this:Fin.Run):boolean[][]{
 				// has a parent as a counter negation
 				if(dict.neg_neg[parentToken]) continue;
 				// has a child or sibling as a couther negation
-				if(sentence.deps.find((x,i)=>(x.parent !== parentIndex && x.parent !== tokenIndex) && (!!dict.neg_neg[sentence.tokens[i].toLowerCase()]))) continue;
+				//if(sentence.deps.find((x,i)=>(x.parent !== parentIndex && x.parent !== tokenIndex) && (!!dict.neg_neg[sentence.tokens[i].toLowerCase()]))) continue;
 				negated[sentenceIndex][parentIndex] = true;
 			}
 		}
