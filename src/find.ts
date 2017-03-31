@@ -52,14 +52,14 @@ export function object (i:number,sentence:SentenceResult):number {
 
 export function childCompliment (i:number,sentence:SentenceResult):number {
 	return sentence.deps.findIndex((dep)=>{
-		return /COMP/.test(dep.label) && dep.parent === i;
+		return /COMP|ADVCL/.test(dep.label) && dep.parent === i;
 	});
 }
 
 export function siblingCompliment (i:number,sentence:SentenceResult):number {
 	const parentIndex = sentence.deps[i].parent;
 	return sentence.deps.findIndex((dep)=>{
-		return /COMP/.test(dep.label) && dep.parent === parentIndex;
+		return /COMP|ADVCL/.test(dep.label) && dep.parent === parentIndex;
 	});
 }
 

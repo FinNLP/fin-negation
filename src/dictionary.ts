@@ -77,7 +77,7 @@ export const neg:{[key:string]:TokenRule} = {
 	},
 	"lack":{
 		type:"V",
-		find:[f.object]
+		find:[f.object,f.nextNoun]
 	},
 	"unremarkable":{
 		type:"J",
