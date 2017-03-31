@@ -1,12 +1,26 @@
 import * as dict from "./dictionary";
 import * as Fin from "finnlp";
-
+import {Inflectors} from "en-inflectors";
 
 declare module "finnlp" {
 	export interface Run {
 		negation:()=>boolean[][];
 	}
 }
+
+
+// conjugate verbs and their rules
+for (var index = 0; index < Object.keys(dict.neg).length; index++) {
+	const token = Object.keys(dict.neg)[index];
+	const rule = dict.neg[token];
+	if(rule.type === "V") {
+		dict.neg[new Inflectors(token).toGerund()] = rule;
+		dict.neg[new Inflectors(token).toPast()] = rule;
+		dict.neg[new Inflectors(token).toPastParticiple()] = rule;
+		dict.neg[new Inflectors(token).toPresentS()] = rule;
+	}
+}
+
 
 Fin.Run.prototype.negation = function(this:Fin.Run):boolean[][]{
 	let negated:boolean[][] = [];
@@ -17,13 +31,10 @@ Fin.Run.prototype.negation = function(this:Fin.Run):boolean[][]{
 			if(!negated[sentenceIndex][tokenIndex]) negated[sentenceIndex][tokenIndex] = false;
 			const token = sentence.tokens[tokenIndex].toLowerCase();
 			if(dict.neg[token]) {
-				const parentIndex = sentence.deps[tokenIndex].parent;
-				const parentToken = sentence.tokens[parentIndex].toLowerCase();
-				// has a parent as a counter negation
-				if(dict.neg_neg[parentToken]) continue;
-				// has a child or sibling as a couther negation
-				//if(sentence.deps.find((x,i)=>(x.parent !== parentIndex && x.parent !== tokenIndex) && (!!dict.neg_neg[sentence.tokens[i].toLowerCase()]))) continue;
-				negated[sentenceIndex][parentIndex] = true;
+				const target = dict.neg[token].find.map(x=>x(tokenIndex,sentence)).find(x=>x !== -1);
+				if(target !== undefined && target !== -1 && (!dict.neg_neg[sentence.tokens[target].toLowerCase()])) {
+					negated[sentenceIndex][target] = true;
+				}
 			}
 		}
 	}
