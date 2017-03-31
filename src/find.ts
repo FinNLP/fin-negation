@@ -40,7 +40,7 @@ export function parentsSubject(i:number,sentence:SentenceResult):number{
 export function parentVerb (i:number,sentence:SentenceResult):number {
 	const parentIndex = sentence.deps[i].parent;
 	if(parentIndex === -1) return -1;
-	else if(sentence.deps[parentIndex].type === "VP") return parentIndex;
+	else if(sentence.tags[parentIndex].charAt(0) === "V") return parentIndex;
 	else return -1;
 }
 

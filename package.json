@@ -1,6 +1,6 @@
 {
   "name": "fin-negation",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Negation detection for FIN NLP",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
